@@ -1,0 +1,95 @@
+localhost:5000
+/login
+
+{
+    "username": "FancyGin981530",
+    "password": "uevI5sAP2Np8G7PeI9MC"
+}
+
+{
+    "username": "FancyGin981530",
+    "password": "ueMC"
+}
+
+{
+    "username": "FlyingCandle491665",
+    "password": "7SkB1YRBDY9Ex1"
+}
+
+{
+    "username": "Flying",
+    "password": "f8pIAz7SkB1YRB"
+}
+
+{
+    "username": "Elia",
+    "password": "19940521"
+}
+
+/register
+{
+    "username": "Elia21",
+    "password": "19940521"
+}
+
+{
+    "username": "FlyingCandle491665",
+    "password": "7SkB1YRBDY9Ex1"
+}
+
+/search
+
+{
+    "title": "Harry"
+}
+
+{
+    "title": "Decision in Normandy123"
+}
+
+{
+    "title": "Decision in Normandy"
+}
+
+/reserve
+{
+    "book_id": "1679595",
+    "user_id": "1"
+}
+
+{
+    "book_id": "16",
+    "user_id": "1"
+}
+
+{
+    "book_id": "160000000",
+    "user_id": "1"
+}
+
+/return
+
+{
+    "book_id": "16",
+    "user_id": "4"
+}
+
+{
+    "book_id": "16",
+    "user_id": "1"
+}
+
+{
+    "book_id": "32",
+    "user_id": "5000001"
+}
+
+/user
+
+{
+    "user_id": "5000001"
+}
+
+{
+    "user_id": "2"
+}
