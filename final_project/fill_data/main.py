@@ -302,7 +302,7 @@ def main():
     transform_text("text")
     transform_text("nouns")
     fill_users()
-    #fill_books()
+    fill_books()
     fill_generated_books()
     fill_reserved_books()
 
