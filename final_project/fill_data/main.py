@@ -306,7 +306,7 @@ def reserve_book(user, book_id): # TO DO title to id
 
 
 def main():
-    create_tables()
+    #create_tables()
     transform_text("text")
     transform_text("nouns")
     fill_users()
