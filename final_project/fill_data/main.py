@@ -3,6 +3,7 @@ import secrets
 import string
 import random
 import csv
+import requests
 
 
 username_adj_pull = ["Little", "Big", "Sunny", "Top", "Loony", "Sugar", "Ghostly", "Happy", "Sad", "Funky", "Cyber",
@@ -15,9 +16,13 @@ username_adj_pull = ["Little", "Big", "Sunny", "Top", "Loony", "Sugar", "Ghostly
 
 cities = ["Kyiv", "Poltava", "Lviv", "Kherson", "Odesa", "Zhytomyr", "Ternopil", "Ivano-Frankivsk"]
 
+USER_URL = ""
+
+BOOK_URL = ""
+
 
 def database_credentials():
-    return psycopg2.connect(database="project",
+    return psycopg2.connect(database="project_users",
                             host="localhost",
                             user="postgres",
                             password="postgres",
@@ -176,20 +181,22 @@ def fill_generated_books():
         authors = file.readlines()
 
     authors_length = len(authors)
-    conn = database_credentials()
+    title_set = set()
 
-    cursor = conn.cursor()
-    for i in range(4000000):
-        cursor.execute(f'INSERT INTO books (title, author, year, publisher, city) '
-                       f'VALUES (%s, %s, %s, %s, %s)',
-                       (generate_title(title_list_final, title_length).strip(), generate_author(authors,
-                        authors_length).strip(), generate_year(), generate_publisher(publishers,
-                        publishers_length).strip(), generate_city()))
+    for i in range(5000000):
+        title = generate_title(title_list_final, title_length).strip()
+        title_set.add(title)
         if i % 100000 == 0:
             print(f'{i} row is inserted')
-    conn.commit()
-    cursor.close()
-    conn.close()
+
+    for title in title_set:
+        request_url = BOOK_URL
+        headers = {'Content-Type': "application/json", 'Accept': "application/json"}
+        body = {"title": title, "author": generate_author(authors, authors_length).strip(), "year": generate_year(),
+                "publisher": generate_publisher(publishers, publishers_length).strip()}
+        res = requests.post(request_url, json=body, headers=headers)
+        if res.status_code is not requests.codes.ok:
+            print(f'{title} was not inserted')
 
 
 def fill_users():
@@ -199,18 +206,19 @@ def fill_users():
     noun_list = list(username_noun_pull.split(" "))
     len_noun = len(noun_list)
     len_adj = len(username_adj_pull)
-    conn = database_credentials()
-
-    cursor = conn.cursor()
+    users_set = set()
     for i in range(5000000):
         username = generate_username(noun_list, len_noun, len_adj)
-        cursor.execute(f'INSERT INTO users (username, password) VALUES (%s, %s)',
-                       (username, generate_password()))
+        users_set.add(username)
         if i % 100000 == 0:
             print(f'{i} row is inserted')
-    conn.commit()
-    cursor.close()
-    conn.close()
+    for user in users_set:
+        request_url = USER_URL
+        headers = {'Content-Type': "application/json", 'Accept': "application/json"}
+        body = {"username": user, "password": generate_password()}
+        res = requests.post(request_url, json=body, headers=headers)
+        if res.status_code is not requests.codes.ok:
+            print(f'{user} was not inserted')
 
 
 def fill_books():
@@ -302,9 +310,7 @@ def main():
     transform_text("text")
     transform_text("nouns")
     fill_users()
-    fill_books()
     fill_generated_books()
-    fill_reserved_books()
 
 
 main()
